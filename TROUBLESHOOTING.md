@@ -1,4 +1,6 @@
-# MTLS Conflict on Host (Raspberry OS, Rasbian)
+# Troubleshooting
+
+## MTLS Conflict on Host (Raspberry OS, Rasbian)
 
 If you are already running Samba/Avahi on your Docker host (or you're wanting to run this on your NAS),
 you should be aware that using --net=host will cause a conflict with the Samba/Avahi install.
@@ -13,7 +15,7 @@ this way the container will not start the avahi daemon/mtls service and place th
 More comments/infos: https://github.com/ServerContainers/samba/issues/79
 
 
-# Problems with macOS and Windows / Docker Desktop
+## Problems with macOS and Windows / Docker Desktop
 
 You might run into troubles on macOS (confirmed) and maybe even Windows (I suspect there might me similar issues).
 
@@ -23,7 +25,7 @@ One user couldn't delete files on the share he mounted from his macbook. I retri
 
 More comments/infos: https://github.com/ServerContainers/samba/issues/125 
 
-# macOS Finder - you see the Server with the specified AVAHI Name and also with the Docker Host hostname
+## macOS Finder - you see the Server with the specified AVAHI Name and also with the Docker Host hostname
 
 It's NetBIOS on port 445 that advertises using the DNS hostname of the server.
 
@@ -36,3 +38,17 @@ https://www.oreilly.com/openbook/samba/book/ch04_04.html
 https://support.apple.com/en-us/102050
 
 See Issue: https://github.com/ServerContainers/samba/issues/135
+
+## AD Member Server
+
+### Domain-Join
+
+For an Active Directory (AD) member server it is required to join the domain before it can serve any requests. For joining a machine to your domain, you usually need domain administrator privileges. Since these credentials are very sensitive credentials, it is a bad idea to add those credentials as part of your container ENV variables in plain text, visible for all users with administration access at this docker host.
+
+Therefore, there is a special procedure on how to initially join the samba server to your domain. See [README.md](README.md#ad-member-server) for more details.
+
+IMPORTANT: after successful domain join (exit code 10005, also see container logs), the container will stop working until you remove the initial credentials from your container (e.g. ENV variables).
+
+### Kerberos authorization failures
+
+Kerberos is sensibel against time differences. Make sure that your docker host with your samba member server (and your DCs and clients, too) synchronizes date/time with a reliable time server. For Active Directory, the time servers of your domain (the DCs!) are recommended in general.

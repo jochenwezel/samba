@@ -266,6 +266,31 @@ If you experience Problems, take a look at this file: [TROUBLESHOOTING.md](TROUB
     * when mounted, the internal avahi daemon will be disabled
 
 
+## AD Member Server
+
+### Domain-Join
+
+For an Active Directory (AD) member server it is required to join the domain before it can serve any requests. For joining a machine to your domain, you usually need domain administrator privileges. Since these credentials are very sensitive credentials, it is a bad idea to add those credentials as part of your container ENV variables in plain text, visible for all users with administration access at this docker host.
+
+Therefore, there is a special procedure on how to initially join the samba server to your domain.
+After initial joining to your domain, you should remove all temporary initialization data.
+
+If you experience Problems, take a look at this file: [TROUBLESHOOTING.md](TROUBLESHOOTING.md#ad-member-server)
+
+#### File based
+
+TODO
+
+#### Domain join for container executed on docker-host 
+
+TODO
+
+#### Temporary ENV variables
+
+TODO
+
+IMPORTANT: after successful domain join (exit code 10005, also see container logs), the container will stop working until you remove the initial credentials from ENV variables.
+
 ## Some helpful indepth informations about TimeMachine and Avahi / Zeroconf 
 
 ### General Infos
