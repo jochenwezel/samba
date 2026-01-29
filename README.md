@@ -2,7 +2,7 @@
 
 samba on alpine
 
-with timemachine, zeroconf (`avahi`) and WSD (Web Services for Devices) (`wsdd2`) support.
+with timemachine, zeroconf (`avahi`), WSD (Web Services for Devices) (`wsdd2`) and winbindd/krb5 (for AD member servers) support.
 
 Note that there are issues regarding UID/GID Mapping on Docker Desktop - see: https://github.com/ServerContainers/samba/issues/125
 
@@ -39,6 +39,13 @@ _all of those variants are automatically build and generated in one go_
     - main version of this repo
     - includes everything (smbd, avahi, wsdd2)
     - not all services need to start/run -> use ENV variables to disable optional services
+- `full-latest` or `full-a<alpine version>-s<samba version>`
+    - full version of this repo inclusive components required for running Active Directory (AD) member servers
+    - includes everything of main (smbd, avahi, wsdd2) and winbindd/krb5
+    - optional service can still be disabled using ENV variables
+- `smbd-winbindd-latest` or `smbd-winbindd-a<alpine version>-s<samba version>`
+    - this will only include smbd, my scripts and winbindd/krb5
+    - optional service can still be disabled using ENV variables
 - `smbd-only-latest` or `smbd-only-a<alpine version>-s<samba version>`
     - this will only include smbd and my scripts - no avahi, wsdd2 installed
 - `smbd-avahi-latest` or `smbd-avahi-a<alpine version>-s<samba version>`
@@ -47,7 +54,7 @@ _all of those variants are automatically build and generated in one go_
 - `smbd-wsdd2-latest` or `smbd-wsdd2-a<alpine version>-s<samba version>`
     - this will only include smbd, my scripts and wsdd2
     - optional service can still be disabled using ENV variables
-
+      
 ## Changelogs
 
 * 2026-01-05
